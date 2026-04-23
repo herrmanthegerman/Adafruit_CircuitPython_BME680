@@ -31,6 +31,7 @@ import math
 import struct
 import time
 
+from adafruit_bus_device import i2c_device, spi_device
 from micropython import const
 
 
@@ -185,7 +186,7 @@ class Adafruit_BME680:
         # Check device ID.
         chip_id = self._read_byte(_BME680_REG_CHIPID)
         if chip_id != _BME680_CHIPID:
-            raise RuntimeError("Failed to find BME680! Chip ID 0x%x" % chip_id)
+            raise RuntimeError(f"Failed to find BME680! Chip ID 0x{chip_id:x}")
 
         # Get variant
         self._chip_variant = self._read_byte(_BME68X_REG_VARIANT)
@@ -639,10 +640,6 @@ class Adafruit_BME680_I2C(Adafruit_BME680):
         refresh_rate: int = 10,
     ) -> None:
         """Initialize the I2C device at the 'address' given"""
-        from adafruit_bus_device import (
-            i2c_device,
-        )
-
         self._i2c = i2c_device.I2CDevice(i2c, address)
         self._debug = debug
         super().__init__(refresh_rate=refresh_rate)
@@ -727,10 +724,6 @@ class Adafruit_BME680_SPI(Adafruit_BME680):
         *,
         refresh_rate: int = 10,
     ) -> None:
-        from adafruit_bus_device import (
-            spi_device,
-        )
-
         self._spi = spi_device.SPIDevice(spi, cs, baudrate=baudrate)
         self._debug = debug
         super().__init__(refresh_rate=refresh_rate)

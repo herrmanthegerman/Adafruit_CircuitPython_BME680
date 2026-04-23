@@ -22,10 +22,10 @@ bme680.sea_level_pressure = 1013.25
 temperature_offset = -5
 
 while True:
-    print("\nTemperature: %0.1f C" % (bme680.temperature + temperature_offset))
-    print("Gas: %d ohm" % bme680.gas)
-    print("Humidity: %0.1f %%" % bme680.relative_humidity)
-    print("Pressure: %0.3f hPa" % bme680.pressure)
-    print("Altitude = %0.2f meters" % bme680.altitude)
+    print(f"\nTemperature: {bme680.temperature + temperature_offset:0.1f} C")
+    print(f"Gas: {bme680.gas:d} ohm")
+    print(f"Humidity: {bme680.relative_humidity:0.1f} %")
+    print(f"Pressure: {bme680.pressure:0.3f} hPa")
+    print(f"Altitude = {bme680.altitude:0.2f} meters")
 
     time.sleep(1)
