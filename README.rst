@@ -3,16 +3,20 @@ Introduction
 ============
 
 .. image:: https://readthedocs.org/projects/adafruit-circuitpython-bme680/badge/?version=latest
-    :target: https://circuitpython.readthedocs.io/projects/bme680/en/latest/
+    :target: https://docs.circuitpython.org/projects/bme680/en/latest/
     :alt: Documentation Status
 
-.. image :: https://img.shields.io/discord/327254708534116352.svg
+.. image:: https://raw.githubusercontent.com/adafruit/Adafruit_CircuitPython_Bundle/main/badges/adafruit_discord.svg
     :target: https://adafru.it/discord
     :alt: Discord
 
 .. image:: https://github.com/adafruit/Adafruit_CircuitPython_BME680/workflows/Build%20CI/badge.svg
     :target: https://github.com/adafruit/Adafruit_CircuitPython_BME680/actions/
     :alt: Build Status
+
+.. image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json
+    :target: https://github.com/astral-sh/ruff
+    :alt: Code Style: Ruff
 
 CircuitPython driver for BME680 sensor over I2C
 
@@ -47,45 +51,46 @@ To install in a virtual environment in your current project:
 .. code-block:: shell
 
     mkdir project-name && cd project-name
-    python3 -m venv .env
-    source .env/bin/activate
+    python3 -m venv .venv
+    source .venv/bin/activate
     pip3 install adafruit-circuitpython-bme680
 
 Usage Example
 =============
 
-.. code-block:: python
+.. code-block:: python3
 
-	from busio import I2C
-	import adafruit_bme680
-	import time
-	import board
+    import adafruit_bme680
+    import time
+    import board
 
-	# Create library object using our Bus I2C port
-	i2c = I2C(board.SCL, board.SDA)
-	bme680 = adafruit_bme680.Adafruit_BME680_I2C(i2c)
+    # Create sensor object, communicating over the board's default I2C bus
+    i2c = board.I2C()   # uses board.SCL and board.SDA
+    bme680 = adafruit_bme680.Adafruit_BME680_I2C(i2c)
 
-	# change this to match the location's pressure (hPa) at sea level
-	bme680.sea_level_pressure = 1013.25
+    # change this to match the location's pressure (hPa) at sea level
+    bme680.sea_level_pressure = 1013.25
 
-	while True:
-	    print("\nTemperature: %0.1f C" % bme680.temperature)
-	    print("Gas: %d ohm" % bme680.gas)
-	    print("Humidity: %0.1f %%" % bme680.humidity)
-	    print("Pressure: %0.3f hPa" % bme680.pressure)
-	    print("Altitude = %0.2f meters" % bme680.altitude)
+    while True:
+        print("\nTemperature: %0.1f C" % bme680.temperature)
+        print("Gas: %d ohm" % bme680.gas)
+        print("Humidity: %0.1f %%" % bme680.relative_humidity)
+        print("Pressure: %0.3f hPa" % bme680.pressure)
+        print("Altitude = %0.2f meters" % bme680.altitude)
 
-	    time.sleep(2)
+        time.sleep(2)
 
+
+Documentation
+=============
+
+API documentation for this library can be found on `Read the Docs <https://docs.circuitpython.org/projects/bme680/en/latest/>`_.
+
+For information on building library documentation, please check out `this guide <https://learn.adafruit.com/creating-and-sharing-a-circuitpython-library/sharing-our-docs-on-readthedocs#sphinx-5-1>`_.
 
 Contributing
 ============
 
 Contributions are welcome! Please read our `Code of Conduct
-<https://github.com/adafruit/Adafruit_CircuitPython_bme680/blob/master/CODE_OF_CONDUCT.md>`_
+<https://github.com/adafruit/Adafruit_CircuitPython_bme680/blob/main/CODE_OF_CONDUCT.md>`_
 before contributing to help this project stay welcoming.
-
-Documentation
-=============
-
-For information on building library documentation, please check out `this guide <https://learn.adafruit.com/creating-and-sharing-a-circuitpython-library/sharing-our-docs-on-readthedocs#sphinx-5-1>`_.

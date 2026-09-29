@@ -23,6 +23,8 @@ Table of Contents
 .. toctree::
     :caption: Tutorials
 
+    Adafruit BME680 - Temperature, Humidity, Pressure and Gas Sensor Learning Guide <https://learn.adafruit.com/adafruit-bme680-humidity-temperature-barometic-pressure-voc-gas>
+
 .. toctree::
     :caption: Related Products
 
@@ -31,8 +33,9 @@ Table of Contents
 .. toctree::
     :caption: Other Links
 
-    Download <https://github.com/adafruit/Adafruit_CircuitPython_BME680/releases/latest>
-    CircuitPython Reference Documentation <https://circuitpython.readthedocs.io>
+    Download from GitHub <https://github.com/adafruit/Adafruit_CircuitPython_BME680/releases/latest>
+    Download Library Bundle <https://circuitpython.org/libraries>
+    CircuitPython Reference Documentation <https://docs.circuitpython.org>
     CircuitPython Support Forum <https://forums.adafruit.com/viewforum.php?f=60>
     Discord Chat <https://adafru.it/discord>
     Adafruit Learning System <https://learn.adafruit.com>
