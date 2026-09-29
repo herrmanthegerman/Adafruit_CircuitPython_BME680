@@ -4,7 +4,8 @@ CircuitPython driver for the Bosch **BME680** environmental sensor
 ([Adafruit product 3660](https://www.adafruit.com/product/3660)).
 It reads temperature, relative humidity, barometric pressure and gas
 resistance, and derives altitude from the pressure. The sensor can be
-connected over I2C or SPI.
+connected over I2C or SPI. The BME688 (same chip ID, "gas high" variant) is
+detected automatically and handled as well.
 
 The full reStructuredText documentation lives in [`README.rst`](README.rst)
 and [`docs/`](docs/).
@@ -66,7 +67,7 @@ For SPI, use `Adafruit_BME680_SPI(spi, cs)` with a `busio.SPI` bus and a
 | Property | Unit |
 | --- | --- |
 | `temperature` | °C |
-| `humidity` | % RH (clamped to 0–100) |
+| `humidity` / `relative_humidity` | % RH (clamped to 0–100) |
 | `pressure` | hPa |
 | `gas` | Ω (gas resistance) |
 | `altitude` | m, computed from `pressure` and `sea_level_pressure` |
@@ -83,6 +84,13 @@ For SPI, use `Adafruit_BME680_SPI(spi, cs)` with a `busio.SPI` bus and a
 
 Invalid values raise `RuntimeError`.
 
+### Gas heater
+
+`set_gas_heater(heater_temp, heater_time)` configures the gas heater
+(temperature in °C, on-time in ms) and returns `True` on success, `False` on
+an I2C/SPI error. Passing `None` for either argument disables the heater and
+gas measurement.
+
 ## How it works
 
 - On startup the driver soft-resets the chip, checks its chip ID (`0x61`),
@@ -92,7 +100,27 @@ Invalid values raise `RuntimeError`.
 - `refresh_rate` limits how often a new measurement is taken (default: at most
   10 per second). Reads within that window return values from the previous
   measurement, so reading several properties in a row is cheap.
+- If the sensor does not report new data within 3 seconds, the read raises
+  `RuntimeError("Timeout while reading sensor data")` instead of blocking
+  forever.
 - Pass `debug=True` to print every raw register read and write.
+
+## Handling errors in long-running scripts
+
+Bus glitches, brownouts or a sensor reset can make a single reading fail with
+`RuntimeError` (timeout) or `OSError` (I2C/SPI error, e.g. errno 121).
+Catch both and re-create the sensor object, which soft-resets the chip and
+reloads its calibration:
+
+```python
+def read_sensor():
+    global sensor
+    try:
+        return sensor.temperature, sensor.humidity, sensor.pressure, sensor.gas
+    except (RuntimeError, OSError):
+        sensor = adafruit_bme680.Adafruit_BME680_I2C(i2c)
+        return None
+```
 
 ## License
 
